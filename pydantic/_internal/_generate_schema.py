@@ -542,7 +542,7 @@ class GenerateSchema:
         def ser_path(path: Any, info: core_schema.SerializationInfo) -> str | os.PathLike[Any]:
             if not isinstance(path, (tp, str)):
                 raise PydanticSerializationUnexpectedValue(
-                    f"Expected `{tp}` but got `{type(path)}` with value `'{path}'` - serialized value may not be as expected."
+                    f"Expected `{tp.__qualname__}` but got `{type(path).__qualname__}` with value `'{path}'` - serialized value may not be as expected."
                 )
             if info.mode == 'python':
                 return path
@@ -560,7 +560,7 @@ class GenerateSchema:
                     core_schema.no_info_after_validator_function(path_validator, strict_inner_schema),
                 ],
                 custom_error_type='path_type',
-                custom_error_message=f'Input is not a valid path for {tp}',
+                custom_error_message=f'Input is not a valid path for {tp.__qualname__}',
             ),
             strict_schema=instance_schema,
             serialization=core_schema.plain_serializer_function_ser_schema(ser_path, info_arg=True, when_used='always'),
